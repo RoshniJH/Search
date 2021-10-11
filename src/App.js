@@ -5,31 +5,20 @@ import Input from './Components/Inputs';
 function App() {
    const [value, setValue] = useState('');
    const {articles} = useSearch(useDebounce(value,500));
-  //  useEffect(() => {
-  //   axios.get(`https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&search=${value}`)
-  //   .then(function (response) {
-  //     const parsedRespoonse = [];
-
-  //     for (let i = 0; i < response.data[1].length; i++){
-  //       parsedRespoonse.push({
-  //         id: response.data[3][i],
-  //         label: response.data[1][i]
-  //       })
-  //     }
-  //     setItems(parsedRespoonse);
-  //   })
-  //   .catch(function (error) {
-  //     // handle error
-  //     console.log(error);
-  //   })
-  //  },[value]);..
+  
   return (
     
     <ReactAutocomplete
       items={articles}
       renderInput={Input}
-      shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
+      inputProps={{placeholder:'Input a search term'}}
       getItemValue={item => item.label}
+      renderMenu={(children,value,style ) => (
+        <div  style= {{...style}} className="input-suggestion">
+          {children}
+          <a href={`/search?query=${value}`} className="search-link">See all results</a>
+        </div>
+      )}
       renderItem={(item, highlighted) =>
         <div
           key={item.id}
